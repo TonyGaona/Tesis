@@ -1,0 +1,331 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 100%;
+                 height: 600px;
+                 background-color: #ffffff;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+             #loadingBar {
+                 position:absolute;
+                 top:0px;
+                 left:0px;
+                 width: 100%;
+                 height: 600px;
+                 background-color:rgba(200,200,200,0.8);
+                 -webkit-transition: all 0.5s ease;
+                 -moz-transition: all 0.5s ease;
+                 -ms-transition: all 0.5s ease;
+                 -o-transition: all 0.5s ease;
+                 transition: all 0.5s ease;
+                 opacity:1;
+             }
+
+             #bar {
+                 position:absolute;
+                 top:0px;
+                 left:0px;
+                 width:20px;
+                 height:20px;
+                 margin:auto auto auto auto;
+                 border-radius:11px;
+                 border:2px solid rgba(30,30,30,0.05);
+                 background: rgb(0, 173, 246); /* Old browsers */
+                 box-shadow: 2px 0px 4px rgba(0,0,0,0.4);
+             }
+
+             #border {
+                 position:absolute;
+                 top:10px;
+                 left:10px;
+                 width:500px;
+                 height:23px;
+                 margin:auto auto auto auto;
+                 box-shadow: 0px 0px 4px rgba(0,0,0,0.2);
+                 border-radius:10px;
+             }
+
+             #text {
+                 position:absolute;
+                 top:8px;
+                 left:530px;
+                 width:30px;
+                 height:50px;
+                 margin:auto auto auto auto;
+                 font-size:22px;
+                 color: #000000;
+             }
+
+             div.outerBorder {
+                 position:relative;
+                 top:400px;
+                 width:600px;
+                 height:44px;
+                 margin:auto auto auto auto;
+                 border:8px solid rgba(0,0,0,0.1);
+                 background: rgb(252,252,252); /* Old browsers */
+                 background: -moz-linear-gradient(top,  rgba(252,252,252,1) 0%, rgba(237,237,237,1) 100%); /* FF3.6+ */
+                 background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(252,252,252,1)), color-stop(100%,rgba(237,237,237,1))); /* Chrome,Safari4+ */
+                 background: -webkit-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* Chrome10+,Safari5.1+ */
+                 background: -o-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* Opera 11.10+ */
+                 background: -ms-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* IE10+ */
+                 background: linear-gradient(to bottom,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* W3C */
+                 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fcfcfc', endColorstr='#ededed',GradientType=0 ); /* IE6-9 */
+                 border-radius:72px;
+                 box-shadow: 0px 0px 10px rgba(0,0,0,0.2);
+             }
+             
+
+             
+
+             
+             /* position absolute is important and the container has to be relative or absolute as well. */
+          div.popup {
+                 position:absolute;
+                 top:0px;
+                 left:0px;
+                 display:none;
+                 background-color:#f5f4ed;
+                 -moz-border-radius: 3px;
+                 -webkit-border-radius: 3px;
+                 border-radius: 3px;
+                 border: 1px solid #808074;
+                 box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
+          }
+
+          /* hide the original tooltip */
+          .vis-tooltip {
+            display:none;
+          }
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+            <div id="loadingBar">
+              <div class="outerBorder">
+                <div id="text">0%</div>
+                <div id="border">
+                  <div id="bar"></div>
+                </div>
+              </div>
+            </div>
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"color": "blue", "id": "Yoo, Sang", "label": "Yoo, Sang", "shape": "dot", "size": 10, "title": "Yoo, Sang"}, {"color": "red", "id": "2-s2.0-85061370688", "label": "2-s2.0-85061370688", "shape": "dot", "size": 10, "title": "2-s2.0-85061370688\u003cbr\u003e\u003ca href=\u0027https://www.scopus.com/inward/record.uri?partnerID=HzOxMe3b\u0026scp=85061370688\u0026origin=inward\u0027 target=\u0027_blank\u0027\u003ePaperLink\u003c/a\u003e"}, {"color": "green", "id": "Support-vector machine", "label": "Support-vector machine", "shape": "dot", "size": 10, "title": "Support-vector machine"}, {"color": "red", "id": "2-s2.0-85194862356", "label": "2-s2.0-85194862356", "shape": "dot", "size": 10, "title": "2-s2.0-85194862356\u003cbr\u003e\u003ca href=\u0027https://www.scopus.com/inward/record.uri?partnerID=HzOxMe3b\u0026scp=85194862356\u0026origin=inward\u0027 target=\u0027_blank\u0027\u003ePaperLink\u003c/a\u003e"}, {"color": "red", "id": "2-s2.0-85114651956", "label": "2-s2.0-85114651956", "shape": "dot", "size": 10, "title": "2-s2.0-85114651956\u003cbr\u003e\u003ca href=\u0027https://www.scopus.com/inward/record.uri?partnerID=HzOxMe3b\u0026scp=85114651956\u0026origin=inward\u0027 target=\u0027_blank\u0027\u003ePaperLink\u003c/a\u003e"}, {"color": "red", "id": "2-s2.0-85141574534", "label": "2-s2.0-85141574534", "shape": "dot", "size": 10, "title": "2-s2.0-85141574534\u003cbr\u003e\u003ca href=\u0027https://www.scopus.com/inward/record.uri?partnerID=HzOxMe3b\u0026scp=85141574534\u0026origin=inward\u0027 target=\u0027_blank\u0027\u003ePaperLink\u003c/a\u003e"}, {"color": "red", "id": "2-s2.0-85096435287", "label": "2-s2.0-85096435287", "shape": "dot", "size": 10, "title": "2-s2.0-85096435287\u003cbr\u003e\u003ca href=\u0027https://www.scopus.com/inward/record.uri?partnerID=HzOxMe3b\u0026scp=85096435287\u0026origin=inward\u0027 target=\u0027_blank\u0027\u003ePaperLink\u003c/a\u003e"}, {"color": "red", "id": "2-s2.0-85137367581", "label": "2-s2.0-85137367581", "shape": "dot", "size": 10, "title": "2-s2.0-85137367581\u003cbr\u003e\u003ca href=\u0027https://www.scopus.com/inward/record.uri?partnerID=HzOxMe3b\u0026scp=85137367581\u0026origin=inward\u0027 target=\u0027_blank\u0027\u003ePaperLink\u003c/a\u003e"}, {"color": "red", "id": "2-s2.0-85079780448", "label": "2-s2.0-85079780448", "shape": "dot", "size": 10, "title": "2-s2.0-85079780448\u003cbr\u003e\u003ca href=\u0027https://www.scopus.com/inward/record.uri?partnerID=HzOxMe3b\u0026scp=85079780448\u0026origin=inward\u0027 target=\u0027_blank\u0027\u003ePaperLink\u003c/a\u003e"}, {"color": "red", "id": "2-s2.0-85148232010", "label": "2-s2.0-85148232010", "shape": "dot", "size": 10, "title": "2-s2.0-85148232010\u003cbr\u003e\u003ca href=\u0027https://www.scopus.com/inward/record.uri?partnerID=HzOxMe3b\u0026scp=85148232010\u0026origin=inward\u0027 target=\u0027_blank\u0027\u003ePaperLink\u003c/a\u003e"}, {"color": "red", "id": "2-s2.0-85111749492", "label": "2-s2.0-85111749492", "shape": "dot", "size": 10, "title": "2-s2.0-85111749492\u003cbr\u003e\u003ca href=\u0027https://www.scopus.com/inward/record.uri?partnerID=HzOxMe3b\u0026scp=85111749492\u0026origin=inward\u0027 target=\u0027_blank\u0027\u003ePaperLink\u003c/a\u003e"}, {"color": "red", "id": "2-s2.0-85173923317", "label": "2-s2.0-85173923317", "shape": "dot", "size": 10, "title": "2-s2.0-85173923317\u003cbr\u003e\u003ca href=\u0027https://www.scopus.com/inward/record.uri?partnerID=HzOxMe3b\u0026scp=85173923317\u0026origin=inward\u0027 target=\u0027_blank\u0027\u003ePaperLink\u003c/a\u003e"}, {"color": "red", "id": "2-s2.0-85075203274", "label": "2-s2.0-85075203274", "shape": "dot", "size": 10, "title": "2-s2.0-85075203274\u003cbr\u003e\u003ca href=\u0027https://www.scopus.com/inward/record.uri?partnerID=HzOxMe3b\u0026scp=85075203274\u0026origin=inward\u0027 target=\u0027_blank\u0027\u003ePaperLink\u003c/a\u003e"}, {"color": "red", "id": "2-s2.0-85090912937", "label": "2-s2.0-85090912937", "shape": "dot", "size": 10, "title": "2-s2.0-85090912937\u003cbr\u003e\u003ca href=\u0027https://www.scopus.com/inward/record.uri?partnerID=HzOxMe3b\u0026scp=85090912937\u0026origin=inward\u0027 target=\u0027_blank\u0027\u003ePaperLink\u003c/a\u003e"}, {"color": "blue", "id": "Guun, Sang Yoo", "label": "Guun, Sang Yoo", "shape": "dot", "size": 10, "title": "Guun, Sang Yoo"}, {"color": "blue", "id": "Torres, Edgar", "label": "Torres, Edgar", "shape": "dot", "size": 10, "title": "Torres, Edgar"}, {"color": "blue", "id": "Torres, Edgar Alejandro", "label": "Torres, Edgar Alejandro", "shape": "dot", "size": 10, "title": "Torres, Edgar Alejandro"}, {"color": "blue", "id": "\u00c1lvarez, Myriam Beatriz Hern\u00e1ndez", "label": "\u00c1lvarez, Myriam Beatriz Hern\u00e1ndez", "shape": "dot", "size": 10, "title": "\u00c1lvarez, Myriam Beatriz Hern\u00e1ndez"}, {"color": "blue", "id": "Yoo, Sang Guun", "label": "Yoo, Sang Guun", "shape": "dot", "size": 10, "title": "Yoo, Sang Guun"}, {"color": "blue", "id": "Torres P, Edgar P.", "label": "Torres P, Edgar P.", "shape": "dot", "size": 10, "title": "Torres P, Edgar P."}, {"color": "blue", "id": "Guun Yoo, Sang", "label": "Guun Yoo, Sang", "shape": "dot", "size": 10, "title": "Guun Yoo, Sang"}, {"color": "blue", "id": "Hern\u00e1ndez-\u00c1lvarez, Myriam", "label": "Hern\u00e1ndez-\u00c1lvarez, Myriam", "shape": "dot", "size": 10, "title": "Hern\u00e1ndez-\u00c1lvarez, Myriam"}, {"color": "blue", "id": "Hern\u00e1ndez-Alvarez, Myriam", "label": "Hern\u00e1ndez-Alvarez, Myriam", "shape": "dot", "size": 10, "title": "Hern\u00e1ndez-Alvarez, Myriam"}, {"color": "blue", "id": "Hernandez-Alvarez, Myriam", "label": "Hernandez-Alvarez, Myriam", "shape": "dot", "size": 10, "title": "Hernandez-Alvarez, Myriam"}, {"color": "blue", "id": "Torres, Edgar P.", "label": "Torres, Edgar P.", "shape": "dot", "size": 10, "title": "Torres, Edgar P."}, {"color": "blue", "id": "Torres Hern\u00e1ndez, Edgar A.", "label": "Torres Hern\u00e1ndez, Edgar A.", "shape": "dot", "size": 10, "title": "Torres Hern\u00e1ndez, Edgar A."}, {"color": "blue", "id": "Hern\u00e1ndez-\u00e1lvarez, Myriam", "label": "Hern\u00e1ndez-\u00e1lvarez, Myriam", "shape": "dot", "size": 10, "title": "Hern\u00e1ndez-\u00e1lvarez, Myriam"}, {"color": "blue", "id": "Hernandez Alvarez, Myriam Beatriz", "label": "Hernandez Alvarez, Myriam Beatriz", "shape": "dot", "size": 10, "title": "Hernandez Alvarez, Myriam Beatriz"}, {"color": "blue", "id": "\u00c1lvarez, Myriam Hern\u00e1ndez", "label": "\u00c1lvarez, Myriam Hern\u00e1ndez", "shape": "dot", "size": 10, "title": "\u00c1lvarez, Myriam Hern\u00e1ndez"}, {"color": "blue", "id": "Torres, Edgar A.", "label": "Torres, Edgar A.", "shape": "dot", "size": 10, "title": "Torres, Edgar A."}, {"color": "blue", "id": "Flores, Ricardo", "label": "Flores, Ricardo", "shape": "dot", "size": 10, "title": "Flores, Ricardo"}, {"color": "blue", "id": "Flores Moyano, Ricardo", "label": "Flores Moyano, Ricardo", "shape": "dot", "size": 10, "title": "Flores Moyano, Ricardo"}, {"color": "blue", "id": "Eduardo Rivadeneira, Jorge", "label": "Eduardo Rivadeneira, Jorge", "shape": "dot", "size": 10, "title": "Eduardo Rivadeneira, Jorge"}, {"color": "blue", "id": "Flores-Moyano, Ricardo", "label": "Flores-Moyano, Ricardo", "shape": "dot", "size": 10, "title": "Flores-Moyano, Ricardo"}, {"color": "blue", "id": "Fernandez, David", "label": "Fernandez, David", "shape": "dot", "size": 10, "title": "Fernandez, David"}, {"color": "blue", "id": "Jimenez, Maria B.", "label": "Jimenez, Maria B.", "shape": "dot", "size": 10, "title": "Jimenez, Maria B."}, {"color": "blue", "id": "Moyano, Ricardo Flores", "label": "Moyano, Ricardo Flores", "shape": "dot", "size": 10, "title": "Moyano, Ricardo Flores"}, {"color": "blue", "id": "Ko, Seok Bum", "label": "Ko, Seok Bum", "shape": "dot", "size": 10, "title": "Ko, Seok Bum"}, {"color": "blue", "id": "Torres-Tello, Julio", "label": "Torres-Tello, Julio", "shape": "dot", "size": 10, "title": "Torres-Tello, Julio"}, {"color": "blue", "id": "Villegas-Ch., William", "label": "Villegas-Ch., William", "shape": "dot", "size": 10, "title": "Villegas-Ch., William"}, {"color": "blue", "id": "Mera-Navarrete, Aracely", "label": "Mera-Navarrete, Aracely", "shape": "dot", "size": 10, "title": "Mera-Navarrete, Aracely"}, {"color": "blue", "id": "Barahona-Espinosa, Santiago", "label": "Barahona-Espinosa, Santiago", "shape": "dot", "size": 10, "title": "Barahona-Espinosa, Santiago"}, {"color": "blue", "id": "Villegas-Ch, William", "label": "Villegas-Ch, William", "shape": "dot", "size": 10, "title": "Villegas-Ch, William"}, {"color": "blue", "id": "Walter-Gaibor-naranjo, Jose", "label": "Walter-Gaibor-naranjo, Jose", "shape": "dot", "size": 10, "title": "Walter-Gaibor-naranjo, Jose"}, {"color": "blue", "id": "Villegas-Ch, William Eduardo", "label": "Villegas-Ch, William Eduardo", "shape": "dot", "size": 10, "title": "Villegas-Ch, William Eduardo"}, {"color": "blue", "id": "Villegas-Ch, W.", "label": "Villegas-Ch, W.", "shape": "dot", "size": 10, "title": "Villegas-Ch, W."}, {"color": "blue", "id": "Villegas-CH, William", "label": "Villegas-CH, William", "shape": "dot", "size": 10, "title": "Villegas-CH, William"}, {"color": "blue", "id": "Gaibor-Naranjo, Walter", "label": "Gaibor-Naranjo, Walter", "shape": "dot", "size": 10, "title": "Gaibor-Naranjo, Walter"}, {"color": "blue", "id": "Sanchez, Ren\u00e9 Vinicio", "label": "Sanchez, Ren\u00e9 Vinicio", "shape": "dot", "size": 10, "title": "Sanchez, Ren\u00e9 Vinicio"}, {"color": "blue", "id": "Cabrera, DIego R.", "label": "Cabrera, DIego R.", "shape": "dot", "size": 10, "title": "Cabrera, DIego R."}, {"color": "blue", "id": "Cabrera, Diego R.", "label": "Cabrera, Diego R.", "shape": "dot", "size": 10, "title": "Cabrera, Diego R."}, {"color": "blue", "id": "Cabrera, Diego", "label": "Cabrera, Diego", "shape": "dot", "size": 10, "title": "Cabrera, Diego"}, {"color": "blue", "id": "S\u00e1nchez, Ren\u00e9 V.", "label": "S\u00e1nchez, Ren\u00e9 V.", "shape": "dot", "size": 10, "title": "S\u00e1nchez, Ren\u00e9 V."}, {"color": "blue", "id": "Lozada, Mariela Cerrada", "label": "Lozada, Mariela Cerrada", "shape": "dot", "size": 10, "title": "Lozada, Mariela Cerrada"}, {"color": "blue", "id": "Medina, Ruben", "label": "Medina, Ruben", "shape": "dot", "size": 10, "title": "Medina, Ruben"}, {"color": "blue", "id": "S\u00e1nchez, R\u00e9ne Vinicio", "label": "S\u00e1nchez, R\u00e9ne Vinicio", "shape": "dot", "size": 10, "title": "S\u00e1nchez, R\u00e9ne Vinicio"}, {"color": "blue", "id": "Cerrada, Mariela", "label": "Cerrada, Mariela", "shape": "dot", "size": 10, "title": "Cerrada, Mariela"}, {"color": "blue", "id": "MacAncela, Jean", "label": "MacAncela, Jean", "shape": "dot", "size": 10, "title": "MacAncela, Jean"}, {"color": "blue", "id": "S\u00e1nchez, Ren\u00e9 Vinicio", "label": "S\u00e1nchez, Ren\u00e9 Vinicio", "shape": "dot", "size": 10, "title": "S\u00e1nchez, Ren\u00e9 Vinicio"}, {"color": "blue", "id": "Mendieta, Diego Roman Cabrera", "label": "Mendieta, Diego Roman Cabrera", "shape": "dot", "size": 10, "title": "Mendieta, Diego Roman Cabrera"}, {"color": "blue", "id": "Cabrera, DIego", "label": "Cabrera, DIego", "shape": "dot", "size": 10, "title": "Cabrera, DIego"}, {"color": "blue", "id": "Medina, Rub\u00e9n", "label": "Medina, Rub\u00e9n", "shape": "dot", "size": 10, "title": "Medina, Rub\u00e9n"}, {"color": "blue", "id": "Macancela, Jean Carlo", "label": "Macancela, Jean Carlo", "shape": "dot", "size": 10, "title": "Macancela, Jean Carlo"}, {"color": "blue", "id": "Cabrera, D.", "label": "Cabrera, D.", "shape": "dot", "size": 10, "title": "Cabrera, D."}, {"color": "blue", "id": "Sanchez, Rene Vinicio", "label": "Sanchez, Rene Vinicio", "shape": "dot", "size": 10, "title": "Sanchez, Rene Vinicio"}, {"color": "blue", "id": "Lucero, Pablo M.", "label": "Lucero, Pablo M.", "shape": "dot", "size": 10, "title": "Lucero, Pablo M."}, {"color": "blue", "id": "S\u00e1nchez, Rene Vinicio", "label": "S\u00e1nchez, Rene Vinicio", "shape": "dot", "size": 10, "title": "S\u00e1nchez, Rene Vinicio"}, {"color": "blue", "id": "Cerrada Lozada, Mariela", "label": "Cerrada Lozada, Mariela", "shape": "dot", "size": 10, "title": "Cerrada Lozada, Mariela"}, {"color": "blue", "id": "Sanchez, Vinicio", "label": "Sanchez, Vinicio", "shape": "dot", "size": 10, "title": "Sanchez, Vinicio"}, {"color": "blue", "id": "Lucero, Pablo", "label": "Lucero, Pablo", "shape": "dot", "size": 10, "title": "Lucero, Pablo"}, {"color": "blue", "id": "Peluffo Ordo\u00f1ez, Diego Hern\u00e1n", "label": "Peluffo Ordo\u00f1ez, Diego Hern\u00e1n", "shape": "dot", "size": 10, "title": "Peluffo Ordo\u00f1ez, Diego Hern\u00e1n"}, {"color": "blue", "id": "Peluffo-Ordo\u00f1ez, Diego H.", "label": "Peluffo-Ordo\u00f1ez, Diego H.", "shape": "dot", "size": 10, "title": "Peluffo-Ordo\u00f1ez, Diego H."}, {"color": "blue", "id": "Morocho-Cayamcela, Manuel Eugenio", "label": "Morocho-Cayamcela, Manuel Eugenio", "shape": "dot", "size": 10, "title": "Morocho-Cayamcela, Manuel Eugenio"}, {"color": "blue", "id": "Peluffo-Ordonez, Diego", "label": "Peluffo-Ordonez, Diego", "shape": "dot", "size": 10, "title": "Peluffo-Ordonez, Diego"}, {"color": "blue", "id": "Ordo\u00f1ez, Diego Peluffo", "label": "Ordo\u00f1ez, Diego Peluffo", "shape": "dot", "size": 10, "title": "Ordo\u00f1ez, Diego Peluffo"}, {"color": "blue", "id": "Peluffo-Ordonez, Diego H.", "label": "Peluffo-Ordonez, Diego H.", "shape": "dot", "size": 10, "title": "Peluffo-Ordonez, Diego H."}, {"color": "blue", "id": "Crespo, Anthony", "label": "Crespo, Anthony", "shape": "dot", "size": 10, "title": "Crespo, Anthony"}, {"color": "blue", "id": "Mej\u0026#x00ED", "label": "Mej\u0026#x00ED", "shape": "dot", "size": 10, "title": "Mej\u0026#x00ED"}, {"color": "blue", "id": "Sierra-Mart\u00ednez, Luz Marina", "label": "Sierra-Mart\u00ednez, Luz Marina", "shape": "dot", "size": 10, "title": "Sierra-Mart\u00ednez, Luz Marina"}, {"color": "blue", "id": "Sierra Mart\u00ednez, Luz M.", "label": "Sierra Mart\u00ednez, Luz M.", "shape": "dot", "size": 10, "title": "Sierra Mart\u00ednez, Luz M."}, {"color": "blue", "id": "Peluffo-Ord\u00f3\u00f1ez, Diego H.", "label": "Peluffo-Ord\u00f3\u00f1ez, Diego H.", "shape": "dot", "size": 10, "title": "Peluffo-Ord\u00f3\u00f1ez, Diego H."}, {"color": "blue", "id": "Peluffo, Diego H.", "label": "Peluffo, Diego H.", "shape": "dot", "size": 10, "title": "Peluffo, Diego H."}, {"color": "blue", "id": "H.peluffo-Ordo\u00f1ez, Diego", "label": "H.peluffo-Ordo\u00f1ez, Diego", "shape": "dot", "size": 10, "title": "H.peluffo-Ordo\u00f1ez, Diego"}, {"color": "blue", "id": "Peluffo-Ordo\u00f1ez, Diego", "label": "Peluffo-Ordo\u00f1ez, Diego", "shape": "dot", "size": 10, "title": "Peluffo-Ordo\u00f1ez, Diego"}, {"color": "blue", "id": "Peluffo-Ord\u00f3\u00f1ez, D.", "label": "Peluffo-Ord\u00f3\u00f1ez, D.", "shape": "dot", "size": 10, "title": "Peluffo-Ord\u00f3\u00f1ez, D."}, {"color": "blue", "id": "Mart\u00ednez, Luz Marina Sierra", "label": "Mart\u00ednez, Luz Marina Sierra", "shape": "dot", "size": 10, "title": "Mart\u00ednez, Luz Marina Sierra"}, {"color": "blue", "id": "Peluffo, Diego H.O.", "label": "Peluffo, Diego H.O.", "shape": "dot", "size": 10, "title": "Peluffo, Diego H.O."}, {"color": "blue", "id": "n-Castrill\u0026#x00F3", "label": "n-Castrill\u0026#x00F3", "shape": "dot", "size": 10, "title": "n-Castrill\u0026#x00F3"}, {"color": "blue", "id": "Peluffo-Ordo\u00f1ez, D. H.", "label": "Peluffo-Ordo\u00f1ez, D. H.", "shape": "dot", "size": 10, "title": "Peluffo-Ordo\u00f1ez, D. H."}, {"color": "blue", "id": "H. Peluffo-Ord\u00f3\u00f1ez, Diego", "label": "H. Peluffo-Ord\u00f3\u00f1ez, Diego", "shape": "dot", "size": 10, "title": "H. Peluffo-Ord\u00f3\u00f1ez, Diego"}, {"color": "blue", "id": "Hernan Peluffo-Ordonez, Diego", "label": "Hernan Peluffo-Ordonez, Diego", "shape": "dot", "size": 10, "title": "Hernan Peluffo-Ordonez, Diego"}, {"color": "blue", "id": "Peluffo-Ord\u00f3\u00f1ez, Diego Hern\u00e1n", "label": "Peluffo-Ord\u00f3\u00f1ez, Diego Hern\u00e1n", "shape": "dot", "size": 10, "title": "Peluffo-Ord\u00f3\u00f1ez, Diego Hern\u00e1n"}, {"color": "blue", "id": "Peluffo-Ord\u00f3\u00f1ez, D. H.", "label": "Peluffo-Ord\u00f3\u00f1ez, D. H.", "shape": "dot", "size": 10, "title": "Peluffo-Ord\u00f3\u00f1ez, D. H."}, {"color": "blue", "id": "Crespo, Fabricio", "label": "Crespo, Fabricio", "shape": "dot", "size": 10, "title": "Crespo, Fabricio"}, {"color": "blue", "id": "Peluffo-Ordo\u00f1ez, Diego Hern\u00e1n", "label": "Peluffo-Ordo\u00f1ez, Diego Hern\u00e1n", "shape": "dot", "size": 10, "title": "Peluffo-Ordo\u00f1ez, Diego Hern\u00e1n"}, {"color": "blue", "id": "Peluffo, D. H.", "label": "Peluffo, D. H.", "shape": "dot", "size": 10, "title": "Peluffo, D. H."}, {"color": "blue", "id": "Peluffo-Ordonez, D. H.", "label": "Peluffo-Ordonez, D. H.", "shape": "dot", "size": 10, "title": "Peluffo-Ordonez, D. H."}, {"color": "blue", "id": "Peluffo-Ord\u00f3nez, Diego H.", "label": "Peluffo-Ord\u00f3nez, Diego H.", "shape": "dot", "size": 10, "title": "Peluffo-Ord\u00f3nez, Diego H."}, {"color": "blue", "id": "Peluffo, Diego", "label": "Peluffo, Diego", "shape": "dot", "size": 10, "title": "Peluffo, Diego"}, {"color": "blue", "id": "Peluffo-Ord\u00f3\u00f1ez, Diego", "label": "Peluffo-Ord\u00f3\u00f1ez, Diego", "shape": "dot", "size": 10, "title": "Peluffo-Ord\u00f3\u00f1ez, Diego"}, {"color": "blue", "id": "Sierra-Mart\u00ednez, Luz M.", "label": "Sierra-Mart\u00ednez, Luz M.", "shape": "dot", "size": 10, "title": "Sierra-Mart\u00ednez, Luz M."}, {"color": "blue", "id": "Sierra, Luz Marina", "label": "Sierra, Luz Marina", "shape": "dot", "size": 10, "title": "Sierra, Luz Marina"}, {"color": "blue", "id": "Morocho-Cayamcela, Manuel E.", "label": "Morocho-Cayamcela, Manuel E.", "shape": "dot", "size": 10, "title": "Morocho-Cayamcela, Manuel E."}, {"color": "blue", "id": "Gutierrez De Mesa, Jose Antonio", "label": "Gutierrez De Mesa, Jose Antonio", "shape": "dot", "size": 10, "title": "Gutierrez De Mesa, Jose Antonio"}, {"color": "blue", "id": "Aguilar, Jose", "label": "Aguilar, Jose", "shape": "dot", "size": 10, "title": "Aguilar, Jose"}, {"color": "blue", "id": "Gomez-Pulido, Jose Manuel", "label": "Gomez-Pulido, Jose Manuel", "shape": "dot", "size": 10, "title": "Gomez-Pulido, Jose Manuel"}, {"color": "blue", "id": "Garces-Jimenez, Alberto", "label": "Garces-Jimenez, Alberto", "shape": "dot", "size": 10, "title": "Garces-Jimenez, Alberto"}, {"color": "blue", "id": "Morales, Luis A.", "label": "Morales, Luis A.", "shape": "dot", "size": 10, "title": "Morales, Luis A."}, {"color": "blue", "id": "Aguilar, J.", "label": "Aguilar, J.", "shape": "dot", "size": 10, "title": "Aguilar, J."}, {"color": "blue", "id": "Morales Escobar, L.", "label": "Morales Escobar, L.", "shape": "dot", "size": 10, "title": "Morales Escobar, L."}, {"color": "blue", "id": "Escobar, Luis Alberto Morales", "label": "Escobar, Luis Alberto Morales", "shape": "dot", "size": 10, "title": "Escobar, Luis Alberto Morales"}, {"color": "blue", "id": "Aguilar, Jos\u00e9", "label": "Aguilar, Jos\u00e9", "shape": "dot", "size": 10, "title": "Aguilar, Jos\u00e9"}, {"color": "blue", "id": "Morales, Luis", "label": "Morales, Luis", "shape": "dot", "size": 10, "title": "Morales, Luis"}, {"color": "blue", "id": "Aguilar Castro, Jos\u00e9 Lisandro", "label": "Aguilar Castro, Jos\u00e9 Lisandro", "shape": "dot", "size": 10, "title": "Aguilar Castro, Jos\u00e9 Lisandro"}, {"color": "blue", "id": "Morales, L.", "label": "Morales, L.", "shape": "dot", "size": 10, "title": "Morales, L."}, {"color": "blue", "id": "Varela Aldas, Jose", "label": "Varela Aldas, Jose", "shape": "dot", "size": 10, "title": "Varela Aldas, Jose"}, {"color": "blue", "id": "Ishak, Mohamad Khairi", "label": "Ishak, Mohamad Khairi", "shape": "dot", "size": 10, "title": "Ishak, Mohamad Khairi"}, {"color": "blue", "id": "Rao, Chukka Hari Govinda", "label": "Rao, Chukka Hari Govinda", "shape": "dot", "size": 10, "title": "Rao, Chukka Hari Govinda"}, {"color": "blue", "id": "Varela Aldas, Jos\u00e9", "label": "Varela Aldas, Jos\u00e9", "shape": "dot", "size": 10, "title": "Varela Aldas, Jos\u00e9"}, {"color": "blue", "id": "Varela-Ald\u00e1s, Jos\u00e9 Luis", "label": "Varela-Ald\u00e1s, Jos\u00e9 Luis", "shape": "dot", "size": 10, "title": "Varela-Ald\u00e1s, Jos\u00e9 Luis"}, {"color": "blue", "id": "Varela-Ald\u00e1s, Jos\u00e9", "label": "Varela-Ald\u00e1s, Jos\u00e9", "shape": "dot", "size": 10, "title": "Varela-Ald\u00e1s, Jos\u00e9"}, {"color": "blue", "id": "Alkahtani, Hend Khalid", "label": "Alkahtani, Hend Khalid", "shape": "dot", "size": 10, "title": "Alkahtani, Hend Khalid"}, {"color": "blue", "id": "Varela-Aldas, Jos\u00e9", "label": "Varela-Aldas, Jos\u00e9", "shape": "dot", "size": 10, "title": "Varela-Aldas, Jos\u00e9"}, {"color": "blue", "id": "Ald\u00e1s, Jos\u00e9 Varela", "label": "Ald\u00e1s, Jos\u00e9 Varela", "shape": "dot", "size": 10, "title": "Ald\u00e1s, Jos\u00e9 Varela"}, {"color": "blue", "id": "Alahmari, Sultan", "label": "Alahmari, Sultan", "shape": "dot", "size": 10, "title": "Alahmari, Sultan"}, {"color": "blue", "id": "Mostafa, Samih M.", "label": "Mostafa, Samih M.", "shape": "dot", "size": 10, "title": "Mostafa, Samih M."}, {"color": "blue", "id": "Yonbawi, Saud", "label": "Yonbawi, Saud", "shape": "dot", "size": 10, "title": "Yonbawi, Saud"}, {"color": "blue", "id": "Varela, Jos\u00e9", "label": "Varela, Jos\u00e9", "shape": "dot", "size": 10, "title": "Varela, Jos\u00e9"}, {"color": "blue", "id": "Varela-Aldas, Jose", "label": "Varela-Aldas, Jose", "shape": "dot", "size": 10, "title": "Varela-Aldas, Jose"}, {"color": "blue", "id": "Raju, B. R.S.S.", "label": "Raju, B. R.S.S.", "shape": "dot", "size": 10, "title": "Raju, B. R.S.S."}, {"color": "blue", "id": "Alonso-G\u00f3mez, Victor", "label": "Alonso-G\u00f3mez, Victor", "shape": "dot", "size": 10, "title": "Alonso-G\u00f3mez, Victor"}, {"color": "blue", "id": "Duque-Perez, \u00d3scar", "label": "Duque-Perez, \u00d3scar", "shape": "dot", "size": 10, "title": "Duque-Perez, \u00d3scar"}, {"color": "blue", "id": "Duque-Perez, Oscar", "label": "Duque-Perez, Oscar", "shape": "dot", "size": 10, "title": "Duque-Perez, Oscar"}, {"color": "blue", "id": "Alonso-G\u00f3mez, V\u00edctor", "label": "Alonso-G\u00f3mez, V\u00edctor", "shape": "dot", "size": 10, "title": "Alonso-G\u00f3mez, V\u00edctor"}, {"color": "blue", "id": "Duque-P\u00e9rez, Oscar", "label": "Duque-P\u00e9rez, Oscar", "shape": "dot", "size": 10, "title": "Duque-P\u00e9rez, Oscar"}, {"color": "blue", "id": "Hern\u00e1ndez-Callejo, Luis", "label": "Hern\u00e1ndez-Callejo, Luis", "shape": "dot", "size": 10, "title": "Hern\u00e1ndez-Callejo, Luis"}, {"color": "blue", "id": "Zamora, Yuri Merizalde", "label": "Zamora, Yuri Merizalde", "shape": "dot", "size": 10, "title": "Zamora, Yuri Merizalde"}, {"color": "blue", "id": "Hernandez-Callejo, Luis", "label": "Hernandez-Callejo, Luis", "shape": "dot", "size": 10, "title": "Hernandez-Callejo, Luis"}, {"color": "blue", "id": "Duque-P\u00e9rez, \u00d3scar", "label": "Duque-P\u00e9rez, \u00d3scar", "shape": "dot", "size": 10, "title": "Duque-P\u00e9rez, \u00d3scar"}, {"color": "blue", "id": "Sanchez, Luis Enrique", "label": "Sanchez, Luis Enrique", "shape": "dot", "size": 10, "title": "Sanchez, Luis Enrique"}, {"color": "blue", "id": "Sanchez Crespo, Luis Enrique", "label": "Sanchez Crespo, Luis Enrique", "shape": "dot", "size": 10, "title": "Sanchez Crespo, Luis Enrique"}, {"color": "blue", "id": "Sanchez, Luis E.", "label": "Sanchez, Luis E.", "shape": "dot", "size": 10, "title": "Sanchez, Luis E."}, {"color": "blue", "id": "S\u00e1nchez, Luis E.", "label": "S\u00e1nchez, Luis E.", "shape": "dot", "size": 10, "title": "S\u00e1nchez, Luis E."}, {"color": "blue", "id": "S\u00e1nchez, Luis Enrique", "label": "S\u00e1nchez, Luis Enrique", "shape": "dot", "size": 10, "title": "S\u00e1nchez, Luis Enrique"}, {"color": "blue", "id": "Antonelli, Leandro", "label": "Antonelli, Leandro", "shape": "dot", "size": 10, "title": "Antonelli, Leandro"}, {"color": "blue", "id": "Corral, Alexandra", "label": "Corral, Alexandra", "shape": "dot", "size": 10, "title": "Corral, Alexandra"}, {"color": "blue", "id": "S\u00e1nchez C, Luis E.", "label": "S\u00e1nchez C, Luis E.", "shape": "dot", "size": 10, "title": "S\u00e1nchez C, Luis E."}, {"color": "blue", "id": "Azorin-Lopez, Jorge", "label": "Azorin-Lopez, Jorge", "shape": "dot", "size": 10, "title": "Azorin-Lopez, Jorge"}, {"color": "blue", "id": "Pertegal-Felices, Mar\u00eda L.", "label": "Pertegal-Felices, Mar\u00eda L.", "shape": "dot", "size": 10, "title": "Pertegal-Felices, Mar\u00eda L."}, {"color": "blue", "id": "Azor\u00edn-L\u00f3pez, Jorge", "label": "Azor\u00edn-L\u00f3pez, Jorge", "shape": "dot", "size": 10, "title": "Azor\u00edn-L\u00f3pez, Jorge"}, {"color": "blue", "id": "Jimeno-Morenilla, Antonio", "label": "Jimeno-Morenilla, Antonio", "shape": "dot", "size": 10, "title": "Jimeno-Morenilla, Antonio"}, {"color": "blue", "id": "Pertegal-Felices, Mar\u00eda Luisa", "label": "Pertegal-Felices, Mar\u00eda Luisa", "shape": "dot", "size": 10, "title": "Pertegal-Felices, Mar\u00eda Luisa"}, {"color": "blue", "id": "Esp\u00edn-Le\u00f3n, Aldrin", "label": "Esp\u00edn-Le\u00f3n, Aldrin", "shape": "dot", "size": 10, "title": "Esp\u00edn-Le\u00f3n, Aldrin"}, {"color": "blue", "id": "Hormaza, Jaime Meza", "label": "Hormaza, Jaime Meza", "shape": "dot", "size": 10, "title": "Hormaza, Jaime Meza"}, {"color": "blue", "id": "Soto, Sebastian Ventura", "label": "Soto, Sebastian Ventura", "shape": "dot", "size": 10, "title": "Soto, Sebastian Ventura"}, {"color": "blue", "id": "Ventura, Sebasti\u00e1n", "label": "Ventura, Sebasti\u00e1n", "shape": "dot", "size": 10, "title": "Ventura, Sebasti\u00e1n"}, {"color": "blue", "id": "Meza Hormaza, Jaime", "label": "Meza Hormaza, Jaime", "shape": "dot", "size": 10, "title": "Meza Hormaza, Jaime"}, {"color": "blue", "id": "Soto, Sebasti\u00e1n Ventura", "label": "Soto, Sebasti\u00e1n Ventura", "shape": "dot", "size": 10, "title": "Soto, Sebasti\u00e1n Ventura"}, {"color": "blue", "id": "Meza, Jaime", "label": "Meza, Jaime", "shape": "dot", "size": 10, "title": "Meza, Jaime"}, {"color": "blue", "id": "Ram\u00edrez, Kevin Mero", "label": "Ram\u00edrez, Kevin Mero", "shape": "dot", "size": 10, "title": "Ram\u00edrez, Kevin Mero"}]);
+                  edges = new vis.DataSet([{"color": "gray", "from": "Yoo, Sang", "to": "2-s2.0-85061370688", "width": 1}, {"color": "gray", "from": "Support-vector machine", "to": "2-s2.0-85061370688", "width": 1}, {"color": "gray", "from": "Support-vector machine", "to": "2-s2.0-85194862356", "width": 1}, {"color": "gray", "from": "Support-vector machine", "to": "2-s2.0-85114651956", "width": 1}, {"color": "gray", "from": "Support-vector machine", "to": "2-s2.0-85141574534", "width": 1}, {"color": "gray", "from": "Support-vector machine", "to": "2-s2.0-85096435287", "width": 1}, {"color": "gray", "from": "Support-vector machine", "to": "2-s2.0-85137367581", "width": 1}, {"color": "gray", "from": "Support-vector machine", "to": "2-s2.0-85079780448", "width": 1}, {"color": "gray", "from": "Support-vector machine", "to": "2-s2.0-85148232010", "width": 1}, {"color": "gray", "from": "Support-vector machine", "to": "2-s2.0-85111749492", "width": 1}, {"color": "gray", "from": "Support-vector machine", "to": "2-s2.0-85173923317", "width": 1}, {"color": "gray", "from": "Support-vector machine", "to": "2-s2.0-85075203274", "width": 1}, {"color": "gray", "from": "Support-vector machine", "to": "2-s2.0-85090912937", "width": 1}, {"color": "gray", "from": "2-s2.0-85061370688", "to": "Guun, Sang Yoo", "width": 1}, {"color": "gray", "from": "2-s2.0-85061370688", "to": "Torres, Edgar", "width": 1}, {"color": "gray", "from": "2-s2.0-85061370688", "to": "Torres, Edgar Alejandro", "width": 1}, {"color": "gray", "from": "2-s2.0-85061370688", "to": "\u00c1lvarez, Myriam Beatriz Hern\u00e1ndez", "width": 1}, {"color": "gray", "from": "2-s2.0-85061370688", "to": "Yoo, Sang Guun", "width": 1}, {"color": "gray", "from": "2-s2.0-85061370688", "to": "Torres P, Edgar P.", "width": 1}, {"color": "gray", "from": "2-s2.0-85061370688", "to": "Guun Yoo, Sang", "width": 1}, {"color": "gray", "from": "2-s2.0-85061370688", "to": "Hern\u00e1ndez-\u00c1lvarez, Myriam", "width": 1}, {"color": "gray", "from": "2-s2.0-85061370688", "to": "Hern\u00e1ndez-Alvarez, Myriam", "width": 1}, {"color": "gray", "from": "2-s2.0-85061370688", "to": "Hernandez-Alvarez, Myriam", "width": 1}, {"color": "gray", "from": "2-s2.0-85061370688", "to": "Torres, Edgar P.", "width": 1}, {"color": "gray", "from": "2-s2.0-85061370688", "to": "Torres Hern\u00e1ndez, Edgar A.", "width": 1}, {"color": "gray", "from": "2-s2.0-85061370688", "to": "Hern\u00e1ndez-\u00e1lvarez, Myriam", "width": 1}, {"color": "gray", "from": "2-s2.0-85061370688", "to": "Hernandez Alvarez, Myriam Beatriz", "width": 1}, {"color": "gray", "from": "2-s2.0-85061370688", "to": "\u00c1lvarez, Myriam Hern\u00e1ndez", "width": 1}, {"color": "gray", "from": "2-s2.0-85061370688", "to": "Torres, Edgar A.", "width": 1}, {"color": "gray", "from": "Flores, Ricardo", "to": "2-s2.0-85194862356", "width": 1}, {"color": "gray", "from": "2-s2.0-85194862356", "to": "Flores Moyano, Ricardo", "width": 1}, {"color": "gray", "from": "2-s2.0-85194862356", "to": "Eduardo Rivadeneira, Jorge", "width": 1}, {"color": "gray", "from": "2-s2.0-85194862356", "to": "Flores-Moyano, Ricardo", "width": 1}, {"color": "gray", "from": "2-s2.0-85194862356", "to": "Fernandez, David", "width": 1}, {"color": "gray", "from": "2-s2.0-85194862356", "to": "Jimenez, Maria B.", "width": 1}, {"color": "gray", "from": "2-s2.0-85194862356", "to": "Moyano, Ricardo Flores", "width": 1}, {"color": "gray", "from": "Ko, Seok Bum", "to": "2-s2.0-85114651956", "width": 1}, {"color": "gray", "from": "2-s2.0-85114651956", "to": "Torres-Tello, Julio", "width": 1}, {"color": "gray", "from": "Villegas-Ch., William", "to": "2-s2.0-85141574534", "width": 1}, {"color": "gray", "from": "2-s2.0-85141574534", "to": "Mera-Navarrete, Aracely", "width": 1}, {"color": "gray", "from": "2-s2.0-85141574534", "to": "Barahona-Espinosa, Santiago", "width": 1}, {"color": "gray", "from": "2-s2.0-85141574534", "to": "Villegas-Ch, William", "width": 1}, {"color": "gray", "from": "2-s2.0-85141574534", "to": "Walter-Gaibor-naranjo, Jose", "width": 1}, {"color": "gray", "from": "2-s2.0-85141574534", "to": "Villegas-Ch, William Eduardo", "width": 1}, {"color": "gray", "from": "2-s2.0-85141574534", "to": "Villegas-Ch, W.", "width": 1}, {"color": "gray", "from": "2-s2.0-85141574534", "to": "Villegas-CH, William", "width": 1}, {"color": "gray", "from": "2-s2.0-85141574534", "to": "Gaibor-Naranjo, Walter", "width": 1}, {"color": "gray", "from": "Sanchez, Ren\u00e9 Vinicio", "to": "2-s2.0-85096435287", "width": 1}, {"color": "gray", "from": "2-s2.0-85096435287", "to": "Cabrera, DIego R.", "width": 1}, {"color": "gray", "from": "2-s2.0-85096435287", "to": "Cabrera, Diego R.", "width": 1}, {"color": "gray", "from": "2-s2.0-85096435287", "to": "Cabrera, Diego", "width": 1}, {"color": "gray", "from": "2-s2.0-85096435287", "to": "S\u00e1nchez, Ren\u00e9 V.", "width": 1}, {"color": "gray", "from": "2-s2.0-85096435287", "to": "Lozada, Mariela Cerrada", "width": 1}, {"color": "gray", "from": "2-s2.0-85096435287", "to": "Medina, Ruben", "width": 1}, {"color": "gray", "from": "2-s2.0-85096435287", "to": "S\u00e1nchez, R\u00e9ne Vinicio", "width": 1}, {"color": "gray", "from": "2-s2.0-85096435287", "to": "Cerrada, Mariela", "width": 1}, {"color": "gray", "from": "2-s2.0-85096435287", "to": "MacAncela, Jean", "width": 1}, {"color": "gray", "from": "2-s2.0-85096435287", "to": "S\u00e1nchez, Ren\u00e9 Vinicio", "width": 1}, {"color": "gray", "from": "2-s2.0-85096435287", "to": "Mendieta, Diego Roman Cabrera", "width": 1}, {"color": "gray", "from": "2-s2.0-85096435287", "to": "Cabrera, DIego", "width": 1}, {"color": "gray", "from": "2-s2.0-85096435287", "to": "Medina, Rub\u00e9n", "width": 1}, {"color": "gray", "from": "2-s2.0-85096435287", "to": "Macancela, Jean Carlo", "width": 1}, {"color": "gray", "from": "2-s2.0-85096435287", "to": "Cabrera, D.", "width": 1}, {"color": "gray", "from": "2-s2.0-85096435287", "to": "Sanchez, Rene Vinicio", "width": 1}, {"color": "gray", "from": "2-s2.0-85096435287", "to": "Lucero, Pablo M.", "width": 1}, {"color": "gray", "from": "2-s2.0-85096435287", "to": "S\u00e1nchez, Rene Vinicio", "width": 1}, {"color": "gray", "from": "2-s2.0-85096435287", "to": "Cerrada Lozada, Mariela", "width": 1}, {"color": "gray", "from": "2-s2.0-85096435287", "to": "Sanchez, Vinicio", "width": 1}, {"color": "gray", "from": "2-s2.0-85096435287", "to": "Lucero, Pablo", "width": 1}, {"color": "gray", "from": "Peluffo Ordo\u00f1ez, Diego Hern\u00e1n", "to": "2-s2.0-85137367581", "width": 1}, {"color": "gray", "from": "2-s2.0-85137367581", "to": "Peluffo-Ordo\u00f1ez, Diego H.", "width": 1}, {"color": "gray", "from": "2-s2.0-85137367581", "to": "Morocho-Cayamcela, Manuel Eugenio", "width": 1}, {"color": "gray", "from": "2-s2.0-85137367581", "to": "Peluffo-Ordonez, Diego", "width": 1}, {"color": "gray", "from": "2-s2.0-85137367581", "to": "Ordo\u00f1ez, Diego Peluffo", "width": 1}, {"color": "gray", "from": "2-s2.0-85137367581", "to": "Peluffo-Ordonez, Diego H.", "width": 1}, {"color": "gray", "from": "2-s2.0-85137367581", "to": "Crespo, Anthony", "width": 1}, {"color": "gray", "from": "2-s2.0-85137367581", "to": "Mej\u0026#x00ED", "width": 1}, {"color": "gray", "from": "2-s2.0-85137367581", "to": "Sierra-Mart\u00ednez, Luz Marina", "width": 1}, {"color": "gray", "from": "2-s2.0-85137367581", "to": "Sierra Mart\u00ednez, Luz M.", "width": 1}, {"color": "gray", "from": "2-s2.0-85137367581", "to": "Peluffo-Ord\u00f3\u00f1ez, Diego H.", "width": 1}, {"color": "gray", "from": "2-s2.0-85137367581", "to": "Peluffo, Diego H.", "width": 1}, {"color": "gray", "from": "2-s2.0-85137367581", "to": "H.peluffo-Ordo\u00f1ez, Diego", "width": 1}, {"color": "gray", "from": "2-s2.0-85137367581", "to": "Peluffo-Ordo\u00f1ez, Diego", "width": 1}, {"color": "gray", "from": "2-s2.0-85137367581", "to": "Peluffo-Ord\u00f3\u00f1ez, D.", "width": 1}, {"color": "gray", "from": "2-s2.0-85137367581", "to": "Mart\u00ednez, Luz Marina Sierra", "width": 1}, {"color": "gray", "from": "2-s2.0-85137367581", "to": "Peluffo, Diego H.O.", "width": 1}, {"color": "gray", "from": "2-s2.0-85137367581", "to": "n-Castrill\u0026#x00F3", "width": 1}, {"color": "gray", "from": "2-s2.0-85137367581", "to": "Peluffo-Ordo\u00f1ez, D. H.", "width": 1}, {"color": "gray", "from": "2-s2.0-85137367581", "to": "H. Peluffo-Ord\u00f3\u00f1ez, Diego", "width": 1}, {"color": "gray", "from": "2-s2.0-85137367581", "to": "Hernan Peluffo-Ordonez, Diego", "width": 1}, {"color": "gray", "from": "2-s2.0-85137367581", "to": "Peluffo-Ord\u00f3\u00f1ez, Diego Hern\u00e1n", "width": 1}, {"color": "gray", "from": "2-s2.0-85137367581", "to": "Peluffo-Ord\u00f3\u00f1ez, D. H.", "width": 1}, {"color": "gray", "from": "2-s2.0-85137367581", "to": "Crespo, Fabricio", "width": 1}, {"color": "gray", "from": "2-s2.0-85137367581", "to": "Peluffo-Ordo\u00f1ez, Diego Hern\u00e1n", "width": 1}, {"color": "gray", "from": "2-s2.0-85137367581", "to": "Peluffo, D. H.", "width": 1}, {"color": "gray", "from": "2-s2.0-85137367581", "to": "Peluffo-Ordonez, D. H.", "width": 1}, {"color": "gray", "from": "2-s2.0-85137367581", "to": "Peluffo-Ord\u00f3nez, Diego H.", "width": 1}, {"color": "gray", "from": "2-s2.0-85137367581", "to": "Peluffo, Diego", "width": 1}, {"color": "gray", "from": "2-s2.0-85137367581", "to": "Peluffo-Ord\u00f3\u00f1ez, Diego", "width": 1}, {"color": "gray", "from": "2-s2.0-85137367581", "to": "Sierra-Mart\u00ednez, Luz M.", "width": 1}, {"color": "gray", "from": "2-s2.0-85137367581", "to": "Sierra, Luz Marina", "width": 1}, {"color": "gray", "from": "2-s2.0-85137367581", "to": "Morocho-Cayamcela, Manuel E.", "width": 1}, {"color": "gray", "from": "Gutierrez De Mesa, Jose Antonio", "to": "2-s2.0-85079780448", "width": 1}, {"color": "gray", "from": "2-s2.0-85079780448", "to": "Aguilar, Jose", "width": 1}, {"color": "gray", "from": "2-s2.0-85079780448", "to": "Gomez-Pulido, Jose Manuel", "width": 1}, {"color": "gray", "from": "2-s2.0-85079780448", "to": "Garces-Jimenez, Alberto", "width": 1}, {"color": "gray", "from": "2-s2.0-85079780448", "to": "Morales, Luis A.", "width": 1}, {"color": "gray", "from": "2-s2.0-85079780448", "to": "Aguilar, J.", "width": 1}, {"color": "gray", "from": "2-s2.0-85079780448", "to": "Morales Escobar, L.", "width": 1}, {"color": "gray", "from": "2-s2.0-85079780448", "to": "Escobar, Luis Alberto Morales", "width": 1}, {"color": "gray", "from": "2-s2.0-85079780448", "to": "Aguilar, Jos\u00e9", "width": 1}, {"color": "gray", "from": "2-s2.0-85079780448", "to": "Morales, Luis", "width": 1}, {"color": "gray", "from": "2-s2.0-85079780448", "to": "Aguilar Castro, Jos\u00e9 Lisandro", "width": 1}, {"color": "gray", "from": "2-s2.0-85079780448", "to": "Morales, L.", "width": 1}, {"color": "gray", "from": "Varela Aldas, Jose", "to": "2-s2.0-85148232010", "width": 1}, {"color": "gray", "from": "2-s2.0-85148232010", "to": "Ishak, Mohamad Khairi", "width": 1}, {"color": "gray", "from": "2-s2.0-85148232010", "to": "Rao, Chukka Hari Govinda", "width": 1}, {"color": "gray", "from": "2-s2.0-85148232010", "to": "Varela Aldas, Jos\u00e9", "width": 1}, {"color": "gray", "from": "2-s2.0-85148232010", "to": "Varela-Ald\u00e1s, Jos\u00e9 Luis", "width": 1}, {"color": "gray", "from": "2-s2.0-85148232010", "to": "Varela-Ald\u00e1s, Jos\u00e9", "width": 1}, {"color": "gray", "from": "2-s2.0-85148232010", "to": "Alkahtani, Hend Khalid", "width": 1}, {"color": "gray", "from": "2-s2.0-85148232010", "to": "Varela-Aldas, Jos\u00e9", "width": 1}, {"color": "gray", "from": "2-s2.0-85148232010", "to": "Ald\u00e1s, Jos\u00e9 Varela", "width": 1}, {"color": "gray", "from": "2-s2.0-85148232010", "to": "Alahmari, Sultan", "width": 1}, {"color": "gray", "from": "2-s2.0-85148232010", "to": "Mostafa, Samih M.", "width": 1}, {"color": "gray", "from": "2-s2.0-85148232010", "to": "Yonbawi, Saud", "width": 1}, {"color": "gray", "from": "2-s2.0-85148232010", "to": "Varela, Jos\u00e9", "width": 1}, {"color": "gray", "from": "2-s2.0-85148232010", "to": "Varela-Aldas, Jose", "width": 1}, {"color": "gray", "from": "2-s2.0-85148232010", "to": "Raju, B. R.S.S.", "width": 1}, {"color": "gray", "from": "Alonso-G\u00f3mez, Victor", "to": "2-s2.0-85111749492", "width": 1}, {"color": "gray", "from": "2-s2.0-85111749492", "to": "Duque-Perez, \u00d3scar", "width": 1}, {"color": "gray", "from": "2-s2.0-85111749492", "to": "Duque-Perez, Oscar", "width": 1}, {"color": "gray", "from": "2-s2.0-85111749492", "to": "Alonso-G\u00f3mez, V\u00edctor", "width": 1}, {"color": "gray", "from": "2-s2.0-85111749492", "to": "Duque-P\u00e9rez, Oscar", "width": 1}, {"color": "gray", "from": "2-s2.0-85111749492", "to": "Hern\u00e1ndez-Callejo, Luis", "width": 1}, {"color": "gray", "from": "2-s2.0-85111749492", "to": "Zamora, Yuri Merizalde", "width": 1}, {"color": "gray", "from": "2-s2.0-85111749492", "to": "Hernandez-Callejo, Luis", "width": 1}, {"color": "gray", "from": "2-s2.0-85111749492", "to": "Duque-P\u00e9rez, \u00d3scar", "width": 1}, {"color": "gray", "from": "Sanchez, Luis Enrique", "to": "2-s2.0-85173923317", "width": 1}, {"color": "gray", "from": "2-s2.0-85173923317", "to": "Sanchez Crespo, Luis Enrique", "width": 1}, {"color": "gray", "from": "2-s2.0-85173923317", "to": "Sanchez, Luis E.", "width": 1}, {"color": "gray", "from": "2-s2.0-85173923317", "to": "S\u00e1nchez, Luis E.", "width": 1}, {"color": "gray", "from": "2-s2.0-85173923317", "to": "S\u00e1nchez, Luis Enrique", "width": 1}, {"color": "gray", "from": "2-s2.0-85173923317", "to": "Antonelli, Leandro", "width": 1}, {"color": "gray", "from": "2-s2.0-85173923317", "to": "Corral, Alexandra", "width": 1}, {"color": "gray", "from": "2-s2.0-85173923317", "to": "S\u00e1nchez C, Luis E.", "width": 1}, {"color": "gray", "from": "Azorin-Lopez, Jorge", "to": "2-s2.0-85075203274", "width": 1}, {"color": "gray", "from": "2-s2.0-85075203274", "to": "Pertegal-Felices, Mar\u00eda L.", "width": 1}, {"color": "gray", "from": "2-s2.0-85075203274", "to": "Azor\u00edn-L\u00f3pez, Jorge", "width": 1}, {"color": "gray", "from": "2-s2.0-85075203274", "to": "Jimeno-Morenilla, Antonio", "width": 1}, {"color": "gray", "from": "2-s2.0-85075203274", "to": "Pertegal-Felices, Mar\u00eda Luisa", "width": 1}, {"color": "gray", "from": "2-s2.0-85075203274", "to": "Esp\u00edn-Le\u00f3n, Aldrin", "width": 1}, {"color": "gray", "from": "Hormaza, Jaime Meza", "to": "2-s2.0-85090912937", "width": 1}, {"color": "gray", "from": "2-s2.0-85090912937", "to": "Soto, Sebastian Ventura", "width": 1}, {"color": "gray", "from": "2-s2.0-85090912937", "to": "Ventura, Sebasti\u00e1n", "width": 1}, {"color": "gray", "from": "2-s2.0-85090912937", "to": "Meza Hormaza, Jaime", "width": 1}, {"color": "gray", "from": "2-s2.0-85090912937", "to": "Soto, Sebasti\u00e1n Ventura", "width": 1}, {"color": "gray", "from": "2-s2.0-85090912937", "to": "Meza, Jaime", "width": 1}, {"color": "gray", "from": "2-s2.0-85090912937", "to": "Ram\u00edrez, Kevin Mero", "width": 1}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {
+    "configure": {
+        "enabled": false
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": true,
+            "type": "dynamic"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": true,
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+                  // make a custom popup
+                      var popup = document.createElement("div");
+                      popup.className = 'popup';
+                      popupTimeout = null;
+                      popup.addEventListener('mouseover', function () {
+                          console.log(popup)
+                          if (popupTimeout !== null) {
+                              clearTimeout(popupTimeout);
+                              popupTimeout = null;
+                          }
+                      });
+                      popup.addEventListener('mouseout', function () {
+                          if (popupTimeout === null) {
+                              hidePopup();
+                          }
+                      });
+                      container.appendChild(popup);
+
+
+                      // use the popup event to show
+                      network.on("showPopup", function (params) {
+                          showPopup(params);
+                      });
+
+                      // use the hide event to hide it
+                      network.on("hidePopup", function (params) {
+                          hidePopup();
+                      });
+
+                      // hiding the popup through css
+                      function hidePopup() {
+                          popupTimeout = setTimeout(function () { popup.style.display = 'none'; }, 500);
+                      }
+
+                      // showing the popup
+                      function showPopup(nodeId) {
+                          // get the data from the vis.DataSet
+                          var nodeData = nodes.get([nodeId]);
+                          popup.innerHTML = nodeData[0].title;
+
+                          // get the position of the node
+                          var posCanvas = network.getPositions([nodeId])[nodeId];
+
+                          // get the bounding box of the node
+                          var boundingBox = network.getBoundingBox(nodeId);
+
+                          //position tooltip:
+                          posCanvas.x = posCanvas.x + 0.5 * (boundingBox.right - boundingBox.left);
+
+                          // convert coordinates to the DOM space
+                          var posDOM = network.canvasToDOM(posCanvas);
+
+                          // Give it an offset
+                          posDOM.x += 10;
+                          posDOM.y -= 20;
+
+                          // show and place the tooltip.
+                          popup.style.display = 'block';
+                          popup.style.top = posDOM.y + 'px';
+                          popup.style.left = posDOM.x + 'px';
+                      }
+                  
+
+
+                  
+                      network.on("stabilizationProgress", function(params) {
+                          document.getElementById('loadingBar').removeAttribute("style");
+                          var maxWidth = 496;
+                          var minWidth = 20;
+                          var widthFactor = params.iterations/params.total;
+                          var width = Math.max(minWidth,maxWidth * widthFactor);
+                          document.getElementById('bar').style.width = width + 'px';
+                          document.getElementById('text').innerHTML = Math.round(widthFactor*100) + '%';
+                      });
+                      network.once("stabilizationIterationsDone", function() {
+                          document.getElementById('text').innerHTML = '100%';
+                          document.getElementById('bar').style.width = '496px';
+                          document.getElementById('loadingBar').style.opacity = 0;
+                          // really clean the dom element
+                          setTimeout(function () {document.getElementById('loadingBar').style.display = 'none';}, 500);
+                      });
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>
